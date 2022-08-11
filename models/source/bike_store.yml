@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: production
+    database: bikestores
+    schema: production
+    tables:
+      - name: products
+      - name: stocks
+      - name: brands
+      - name : categories
+  - name: sales
+    database: bikestores
+    schema: sales
+    tables:
+      - name: customers
+      - name: orders
+      - name: order_items
+      - name: stores
+      - name: staffs
+  - name: dbt_development
+    database: bikestores
+    schema: dbt_development
+    tables:
+      - name: stg_well_liked_products
