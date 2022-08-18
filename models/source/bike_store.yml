@@ -15,11 +15,7 @@ sources:
     tables:
       - name: customers
       - name: orders
+        loaded_at_feild: 
       - name: order_items
       - name: stores
       - name: staffs
-  - name: dbt_development
-    database: bikestores
-    schema: dbt_development
-    tables:
-      - name: stg_well_liked_products

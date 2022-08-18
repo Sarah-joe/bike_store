@@ -10,7 +10,7 @@ select
 FROM 
 {{ source('production', 'categories') }} A
 LEFT JOIN
-{{ source ('dbt_development','stg_well_liked_products') }} B
+{{ ref('stg_well_liked_products') }} B
 ON A.CATEGORY_ID = B.CATEGORY_ID
 LEFT JOIN
 {{ source('production', 'brands') }}
