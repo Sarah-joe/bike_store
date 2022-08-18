@@ -34,7 +34,7 @@ from (select
     REPLACE(C.PHONE, '''',' ')  AS STORE_PHONE,
     B.SHIPPED_DATE
 from {{ source('sales', 'customers') }} A 
-LEFT JOIN {{ source('sales', 'orders') }} B
+LEFT JOIN {{ ref('stg_orders')}} B
 ON A.CUSTOMER_ID = B.CUSTOMER_ID
 LEFT JOIN {{ source('sales', 'stores') }} C
 ON B.STORE_ID = C.STORE_ID
