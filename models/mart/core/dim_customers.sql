@@ -39,3 +39,4 @@ final as (
 )
 
 select * from final
+where lifetime_value > '1000'
