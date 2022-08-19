@@ -1,5 +1,5 @@
 {{ config(
-    materialized='table'
+    materialized='view'
     ) }}
 select
     A.ORDER_ID,

@@ -24,7 +24,7 @@ models:
             description: "The key column for this table"
             tests:
                 - not_null
-          - name: NUMBER_OF_ORDERS LIFETIME_VALUE
+          - name: NUMBER_OF_ORDERS
             description: "The key column for this table"
             tests:
                 - not_null
