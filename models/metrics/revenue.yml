@@ -1,0 +1,22 @@
+version: 2
+
+metrics:
+  - name: LIFETIME_VALUE
+    label: LIFETIME_VALUE
+    model: ref('rpt_valued_customers')
+    description: "The sum of paid customers using the product"
+
+    type: sum
+    sql: CUSTOMER_ID
+
+    timestamp: first_order_date
+    time_grains: [day, week, month]
+
+    dimensions:
+      - CUSTOMER_name
+      - CUSTOMER_ID
+    
+    filters:
+      - field: NUMBER_OF_ORDERS
+        operator: '>'
+        value: '1'
