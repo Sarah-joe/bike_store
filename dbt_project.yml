@@ -23,4 +23,4 @@ models:
         +materialized: view
     report:
       dbt_test_scripts:
-          +materialized: ephemeral
+          +materialized: view
