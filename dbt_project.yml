@@ -38,3 +38,6 @@ models:
           +materialized: table
     staging:
         +materialized: view
+    report:
+      dbt_test_scripts:
+          +materialized: ephemeral
