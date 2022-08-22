@@ -19,4 +19,4 @@ metrics:
     filters:
       - field: NUMBER_OF_ORDERS
         operator: '>'
-        value: '1'
+        value: "'1'"
