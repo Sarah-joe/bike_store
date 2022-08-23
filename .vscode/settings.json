@@ -1,0 +1,24 @@
+{
+    "sqltools.connections": [
+        {
+            "authenticator": "SNOWFLAKE",
+            "ocspOptions": {
+                "ocspFailOpen": true
+            },
+            "snowflakeOptions": {
+                "clientSessionKeepAlive": true,
+                "clientSessionKeepAliveHeartbeatFrequency": 3600,
+                "role": "ACCOUNTADMIN"
+            },
+            "previewLimit": 50,
+            "driver": "Snowflake",
+            "name": "Snowflake",
+            "group": "Development",
+            "account": "up53515.ap-southeast-1",
+            "username": "Sarah",
+            "password": "Vignesh07##",
+            "database": "BIKESTORES",
+            "warehouse": "COMPUTE_WH"
+        }
+    ]
+}

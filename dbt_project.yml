@@ -2,7 +2,7 @@ name: 'my_bike_store'
 version: '1.0.0'
 config-version: 2
 
-profile: 'default'
+profile: 'my_dbt'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
