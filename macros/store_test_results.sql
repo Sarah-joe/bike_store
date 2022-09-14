@@ -53,7 +53,7 @@
       '{{ result.execution_time }}'::text as execution_time_seconds,
       '{{ result.status }}'::text as test_result,
       '{{ result.node.original_file_path }}'::text as file_test_defined,
-      current_timestamp as timestamp
+      current_timestamp as _timestamp
     
     {{ "union all" if not loop.last }}
   

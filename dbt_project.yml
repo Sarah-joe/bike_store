@@ -19,11 +19,7 @@ on-run-end:
   -"{{ store_test_results(results) }}"
 models:
   my_bike_store:
-    mart:
-      core:
-          +materialized: table
     staging:
-        +materialized: view
+        +materialized: table
     report:
-      dbt_test_scripts:
-          +materialized: view
+        +materialized: table

@@ -1,0 +1,20 @@
+version: 2
+
+models:
+    - name: rpt_valued_customers
+      description: "Business that purchases products with discount and customer's "
+      tests:
+        - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+              - customer_id
+              - customer_name
+
+      columns:
+          - name: CUSTOMER_ID
+            description: "The key column for this table"
+            tests:
+                - not_null
+                - dbt_utils.relationships_where:
+                      to: ref('dim_customers')
+                      field: customer_id
+

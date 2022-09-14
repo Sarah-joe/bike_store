@@ -17,6 +17,7 @@ on a.order_id = b.order_id
 select
 DISTINCT
     customers.*,
+    case when number_of_orders > 2 then 'True' else false end result,
     'DBT_'|| TO_CHAR(curreNT_DATE,'YYYY_MM_DD_HH_MI_SS') || '_content' as etl_batch_id
 	,'bi_dbt_user_prd' as etl_insert_user_id
 	, current_timestamp as etl_insert_rec_dttm
@@ -24,4 +25,5 @@ DISTINCT
 	, cast(null as timestamp) as etl_update_rec_dttm
 from products
 left join customers using (customer_id)
+where customer_id <> null
 
