@@ -16,7 +16,12 @@ on a.order_id = b.order_id
 
 select
 DISTINCT
-    customers.*
+    customers.*,
+    'DBT_'|| TO_CHAR(curreNT_DATE,'YYYY_MM_DD_HH_MI_SS') || '_content' as etl_batch_id
+	,'bi_dbt_user_prd' as etl_insert_user_id
+	, current_timestamp as etl_insert_rec_dttm
+	, null as etl_update_user_id
+	, cast(null as timestamp) as etl_update_rec_dttm
 from products
 left join customers using (customer_id)
 
