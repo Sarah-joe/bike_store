@@ -15,8 +15,6 @@ clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
-on-run-end:
-  -"{{ store_test_results(results) }}"
 models:
   my_bike_store:
     staging:
