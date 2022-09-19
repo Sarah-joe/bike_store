@@ -25,5 +25,5 @@ DISTINCT
 	, cast(null as timestamp) as etl_update_rec_dttm
 from products
 left join customers using (customer_id)
-where customer_id <> null
-
+where CUSTOMER_ID is not null and CUSTOMER_name is not null and order_ID is not null and number_of_orders is not null
+order by  CUSTOMER_ID asc

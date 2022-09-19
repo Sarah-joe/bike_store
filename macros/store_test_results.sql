@@ -1,7 +1,7 @@
 /*
-  --add "{{ store_test_results(results) }}" to an on-run-end: block in dbt_project.yml 
+  --add "{{ store_test_results(results, store_schema=true) }}" to an on-run-end: block in dbt_project.yml 
 */
-{% macro store_test_results(results) %}
+{% macro store_test_results(results, store_schema=false) %}
 
   {%- set central_tbl -%} {{ target.schema }}.test_results_central {%- endset -%}
   {%- set test_results = [] -%}
@@ -15,6 +15,13 @@
   {%- endif -%}
 
   {{ log("Centralizing test data in " + central_tbl, info = true) if execute }}
+
+  {# Parse graph an get schema info for all models/sources #}
+  {% if store_schema %}
+    {% set node_schemas = get_node_schemas() %}
+  {% else %}
+    {% set node_schemas = {} %}
+  {% endif %}
 
   {# Check if table exists #}
   {% set central_table_query %} {{ dbt_utils.get_tables_by_pattern_sql(target.schema | upper, 'TEST_RESULTS_CENTRAL') }} {% endset %}
@@ -44,15 +51,15 @@
     
     select
       {{ dbt_utils.surrogate_key( "'"~test_name ~ "'" , dbt_utils.current_timestamp() ) }} as test_sk, 
-      '{{ test_name }}'::text as test_name,
-      '{{ result.node.name }}'::text as test_name_long,
-      '{{ test_type}}'::text as test_type,
-      '{{ process_refs(result.node.refs) }}'::text as model_refs,
-      '{{ process_refs(result.node.sources, is_src=true) }}'::text as source_refs,
-      '{{ result.node.config.severity }}'::text as test_severity_config,
+      '{{ test_name }}'::varchar(1000) as test_name,
+      '{{ result.node.name }}'::varchar(2000) as test_name_long,
+      '{{ test_type}}'::varchar(250) as test_type,
+      '{{ process_refs(result.node.refs, is_src=false, schemas=node_schemas) }}'::varchar(3000) as model_refs,
+      '{{ process_refs(result.node.sources, is_src=true, schemas=node_schemas) }}'::varchar(3000) as source_refs,
+      '{{ result.node.config.severity }}'::varchar(250) as test_severity_config,
       '{{ result.execution_time }}'::text as execution_time_seconds,
-      '{{ result.status }}'::text as test_result,
-      '{{ result.node.original_file_path }}'::text as file_test_defined,
+      '{{ result.status }}'::varchar(125) as test_result,
+      '{{ result.node.original_file_path }}'::varchar(2000) as file_test_defined,
       current_timestamp as _timestamp
     
     {{ "union all" if not loop.last }}
@@ -71,7 +78,7 @@
     - models come through as [['model'], ['model_b']]
     - srcs come through as [['source','table'], ['source_b','table_b']]
 */
-{% macro process_refs( ref_list, is_src=false ) %}
+{% macro process_refs( ref_list, is_src=false, schemas=None ) %}
   {% set refs = [] %}
 
   {% if ref_list is defined and ref_list|length > 0 %}
@@ -79,7 +86,12 @@
         {% if is_src %}
           {{ refs.append(ref|join('.')) }}
         {% else %}
-          {{ refs.append(ref[0]) }}
+          {% if schemas %}
+            {% set ref_cleaned = schemas[ref[0]]~'.'~ref[0] %}
+          {% else %}
+            {% set ref_cleaned = ref[0] %}
+          {% endif %}
+          {{ refs.append(ref_cleaned) }}
         {% endif %} 
       {% endfor %}
 

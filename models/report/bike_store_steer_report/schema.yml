@@ -8,13 +8,26 @@ models:
             combination_of_columns:
               - customer_id
               - customer_name
+              - FIRST_ORDER_DATE
 
       columns:
           - name: CUSTOMER_ID
             description: "The key column for this table"
             tests:
+                - dbt_utils.relationships_where:
+                      to: source('sales', 'customers') #ref('customers')
+                      field: customer_id
                 - not_null
                 - dbt_utils.relationships_where:
                       to: ref('dim_customers')
                       field: customer_id
+          - name: lifetime_value
+            description: "Total number of product purchased by customers"
+            tests:
+                - dbt_expectations.expect_column_values_to_be_within_n_stdevs:
+                    group_by: customer_id 
+                    sigma_threshold: 6  
+          - name: ORDER_ID
+            test:
+              - dbt_utils.not_constant
 
